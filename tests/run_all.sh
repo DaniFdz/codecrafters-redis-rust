@@ -14,10 +14,14 @@ fi
 DIRNAME="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 TESTS_DIR="$DIRNAME/."
 START_SERVER="$DIRNAME/../spawn_redis_server.sh"
+RED_COLOR='\033[0;31m'
+GREEN_COLOR='\033[0;32m'
+NO_COLOR='\033[0m'
 
 function stop_server {
   echo -e "Stopping the server..."
   kill $SERVER_PID &>/dev/null
+  echo -e
 }
 
 function handle_CTRL_C {
@@ -60,13 +64,12 @@ function main {
 
 trap handle_CTRL_C INT
 
-main || stop_server && exit 1
-
+main 
 stop_server
 if [ "$ALL_PASSED" -eq 1 ]; then
-  echo -e "All tests passed!"
+  echo -e "${GREEN_COLOR}All tests passed!${NO_COLOR}\n"
   exit 0
 else
-  echo -e "Some tests failed!"
+  echo -e "${RED_COLOR}Some tests failed.${NO_COLOR}\n"
   exit 1
 fi
