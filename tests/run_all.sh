@@ -51,7 +51,6 @@ function main {
   # Run the tests
   ALL_PASSED=1
   for test in "$TESTS_DIR"/*.test.sh; do
-    $test
     if ! $test; then
       ALL_PASSED=0
     fi
