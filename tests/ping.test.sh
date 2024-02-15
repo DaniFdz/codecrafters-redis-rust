@@ -15,11 +15,14 @@ STATUS=$?
 # Check the result
 if [ $STATUS -eq 0 ]; then
   echo -e "$TEST_NAME - ${COLOR_GREEN}PASSED${COLOR_RESET}"
+  rm $TMP_OUTPUT
+  exit 0
 else
   echo -e "$TEST_NAME - ${COLOR_RED}FAILED${COLOR_RESET}"
   echo -e "\tProgram finished with status: $STATUS"
   echo -e "\tOutput: $(cat $TMP_OUTPUT)"
+  rm $TMP_OUTPUT
+  exit 1
 fi
 
 # Clean up
-rm $TMP_OUTPUT
