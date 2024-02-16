@@ -1,10 +1,12 @@
 use std::io::{Read, Result, Write};
 use std::net::{TcpListener, TcpStream};
 
-fn handle_response(stream: &mut TcpStream, input: &str) -> Result<()> {
-    let response = match input {
-        _ => "+PONG\r\n",
+fn handle_request(stream: &mut TcpStream, input: &str) -> Result<()> {
+    let response = match input.to_uppercase().as_str() {
+        "PING" => "+PONG\r\n",
+        _ => return Ok(())
     };
+    println!("[i] Sending response: {}", response.trim());
     stream.write(response.as_bytes())?;
     stream.flush()?;
     Ok(())
@@ -22,12 +24,12 @@ fn handle_connection(stream: &mut TcpStream) -> Result<()> {
             break;
         }
         println!("[i] Received {} bytes", n);
-        println!("[i] Data: {:?}", String::from_utf8_lossy(&buffer[..n]));
         input.push_str(&String::from_utf8_lossy(&buffer[..n]));
 
-        if input.ends_with("\r\n") {
-            handle_response(stream, &input)?;
-        }
+        input.split("\r\n").collect::<Vec<&str>>().iter().for_each(|x| {
+            println!("[i] Handling request: {}", x);
+            handle_request(stream, x).expect("Failed to handle request");
+        });
     }
 
     Ok(())
