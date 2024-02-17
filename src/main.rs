@@ -5,9 +5,12 @@ use tokio::{
 
 fn handle_request(request: &str) -> String {
     let response: String;
-    match request.to_uppercase().split_whitespace(){
-        _ => {
+    match request.to_uppercase().split_whitespace().collect::<Vec<&str>>().as_slice() {
+        ["PING"] => {
             response = "+PONG\r\n".to_string();
+        },
+        _ => {
+            response = "".to_string();
         }
     }
     response
@@ -28,9 +31,11 @@ async fn handle_connection(mut stream: TcpStream) {
         println!("[*] Received: {}", request);
         for line in request.lines() {
             let response = handle_request(line);
-            if let Err(e) = stream.write_all(response.as_bytes()).await {
-                eprintln!("[!] Failed to write to socket: {}", e);
-                return;
+            if !response.is_empty() {
+                if let Err(e) = stream.write_all(response.as_bytes()).await {
+                    eprintln!("[!] Failed to write to socket: {}", e);
+                    return;
+                }
             }
         }
     }
