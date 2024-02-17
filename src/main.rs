@@ -21,7 +21,7 @@ fn parse_request(request: &str) -> String {
             }
         }
         if !pass {
-            if commands.contains(line.to_uppercase().as_str()) {
+            if !command_found && commands.contains(line.to_uppercase().as_str()) {
                 command_found = true;
                 parsed_request = format!("{} {}", parsed_request, line.to_uppercase());
             }
