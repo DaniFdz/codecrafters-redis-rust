@@ -24,5 +24,3 @@ else
   rm $TMP_OUTPUT
   exit 1
 fi
-
-# Clean up
