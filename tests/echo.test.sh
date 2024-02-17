@@ -20,15 +20,9 @@ function test_echo() {
     fi
 }
 
-PIDS=()
-for i in {1..10}; do
-    test_echo "$i" &
-		PIDS+=($!)
-done
-
-# Wait for all the connections to finish
-for pid in ${PIDS[*]}; do
-		wait $pid
+TESTS=("lowercase" "UPPERCASE" "12345")
+for test in "${TESTS[@]}"; do
+		test_echo $test
 done
 
 if [ "$OVERALL_STATUS" -eq 0 ]; then

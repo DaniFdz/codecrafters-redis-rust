@@ -1,13 +1,18 @@
+use std::collections::HashSet;
+
 use tokio::{
     io::{AsyncReadExt, AsyncWriteExt},
     net::{TcpListener, TcpStream},
 };
 
+
 const CONTROL_CHARACTERS: [char; 5] = ['+', '-', ':', '$', '*'];
 
 fn parse_request(request: &str) -> String {
     let mut parsed_request = String::new();
-    request.to_uppercase().split("\r\n").for_each(|line| {
+    let mut command_found = false;
+    let commands: HashSet<&str> = HashSet::from(["PING", "ECHO"]);
+    request.split("\r\n").for_each(|line| {
         let mut pass = false;
         for c in CONTROL_CHARACTERS.iter() {
             if line.starts_with(*c) {
@@ -16,7 +21,13 @@ fn parse_request(request: &str) -> String {
             }
         }
         if !pass {
-            parsed_request = format!("{} {}", parsed_request, line);
+            if commands.contains(line.to_uppercase().as_str()) {
+                command_found = true;
+                parsed_request = format!("{} {}", parsed_request, line.to_uppercase());
+            }
+            else{
+                parsed_request = format!("{} {}", parsed_request, line);
+            }
         }
     });
     return parsed_request;
@@ -25,7 +36,6 @@ fn parse_request(request: &str) -> String {
 fn handle_request(request: String) -> String {
     let response: String;
     match request
-        .to_uppercase()
         .split_whitespace()
         .collect::<Vec<&str>>()
         .as_slice()
