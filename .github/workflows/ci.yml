@@ -9,10 +9,16 @@ jobs:
     steps:
       - name: Set up Rust
         uses: actions/checkout@v2
+      - name: Install Redis-cli
+        run: |
+          sudo apt-get update
+          sudo apt-get install redis-server
       - name: Build
         run: cargo build --release --verbose
       - name: Test
-        run: cargo test --verbose
+        run: |
+          cargo test --verbose
+          bash tests/run_all.sh
       - name: Clippy
         run: cargo clippy --verbose -- -D warnings
       # - name: Install cargo-audit
