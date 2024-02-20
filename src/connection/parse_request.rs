@@ -6,7 +6,7 @@ pub fn parse_request(request: &str) -> String {
     const CONTROL_CHARACTERS: [char; 5] = ['+', '-', ':', '$', '*'];
     let mut parsed_request = String::new();
     let mut command_found = false;
-    let commands: HashSet<&str> = HashSet::from(["PING", "ECHO"]);
+    let commands: HashSet<&str> = HashSet::from(["PING", "ECHO", "SET", "GET"]);
     request.split("\r\n").for_each(|line| {
         let mut pass = false;
         for c in CONTROL_CHARACTERS.iter() {
@@ -44,5 +44,8 @@ mod tests {
 
         let request = "GET\r\nkey\r\n";
         assert_eq!(parse_request(request), "GET key");
+
+        let request = "$3\r\nset\r\n$10\r\nwatermelon\r\n$5\r\nvalue\r\n";
+        assert_eq!(parse_request(request), "SET watermelon value");
     }
 }

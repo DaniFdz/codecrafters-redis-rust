@@ -27,7 +27,7 @@ impl RedisDatabase {
     pub fn get_key(&self, key: String) -> String {
         match self.data.get(&key) {
             Some(value) => format!("+{}\r\n", value.value),
-            None => "-ERR key not found\r\n".to_string(),
+            None => "$-1\r\n".to_string(),
         }
     }
 }
@@ -47,6 +47,6 @@ mod tests {
         let mut db = RedisDatabase::new();
         db.set_key("foo".to_string(), "bar".to_string());
         assert_eq!(db.get_key("foo".to_string()), "+bar\r\n");
-        assert_eq!(db.get_key("baz".to_string()), "-ERR key not found\r\n");
+        assert_eq!(db.get_key("baz".to_string()), "$-1\r\n");
     }
 }

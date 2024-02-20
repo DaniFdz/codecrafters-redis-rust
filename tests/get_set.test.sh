@@ -22,7 +22,7 @@ if [ "$response" != "test" ]; then
     OVERALL_STATUS=1
 fi
 response=$($REDIS_CLI get "test2")
-if [ "$response" != "(nil)" ]; then
+if [ "$response" != "" ]; then
     echo -e "$TEST_NAME - ${COLOR_RED}FAILED${COLOR_RESET} getting key 'test2' - Expected '(nil)' got $response"
     OVERALL_STATUS=1
 fi
