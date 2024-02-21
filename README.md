@@ -1,4 +1,6 @@
-[Rust and redis banner](./public/image.png)
+<h1 style="text-align: center;">Rust Redis</h1>
+
+![Rust and redis banner](./public/image.png)
 
 This is my solution with Rust🦀 to the
 ["Build Your Own Redis" Challenge](https://codecrafters.io/challenges/redis).
