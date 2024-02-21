@@ -11,19 +11,19 @@ REDIS_CLI="redis-cli"
 
 
 OVERALL_STATUS=0
-response=$($REDIS_CLI set "test" "test")
+response=$($REDIS_CLI set "test_set" "test")
 if [ "$response" != "OK" ]; then
-    echo -e "$TEST_NAME - ${COLOR_RED}FAILED${COLOR_RESET} setting key 'test' - Expected 'OK' got $response"
+    echo -e "$TEST_NAME - ${COLOR_RED}FAILED${COLOR_RESET} setting key 'test_set' - Expected 'OK' got $response"
     OVERALL_STATUS=1
 fi
-response=$($REDIS_CLI get "test")
+response=$($REDIS_CLI get "test_set")
 if [ "$response" != "test" ]; then
-    echo -e "$TEST_NAME - ${COLOR_RED}FAILED${COLOR_RESET} getting key 'test' - Expected 'test' got $response"
+    echo -e "$TEST_NAME - ${COLOR_RED}FAILED${COLOR_RESET} getting key 'test_set' - Expected 'test' got $response"
     OVERALL_STATUS=1
 fi
-response=$($REDIS_CLI get "test2")
+response=$($REDIS_CLI get "test_set_2")
 if [ "$response" != "" ]; then
-    echo -e "$TEST_NAME - ${COLOR_RED}FAILED${COLOR_RESET} getting key 'test2' - Expected '(nil)' got $response"
+    echo -e "$TEST_NAME - ${COLOR_RED}FAILED${COLOR_RESET} getting key 'test_set_2' - Expected '(nil)' got $response"
     OVERALL_STATUS=1
 fi
 

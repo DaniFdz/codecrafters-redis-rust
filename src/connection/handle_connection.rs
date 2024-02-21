@@ -5,6 +5,8 @@ use tokio::{
     io::{AsyncReadExt, AsyncWriteExt},
     net::TcpStream,
 };
+use tokio::time::Duration;
+use std::thread;
 
 fn handle_request(request: String, db: Arc<Mutex<RedisDatabase>>) -> String {
     match request.split_whitespace().collect::<Vec<&str>>().as_slice() {
@@ -13,6 +15,21 @@ fn handle_request(request: String, db: Arc<Mutex<RedisDatabase>>) -> String {
         ["SET", key, value] => {
             let mut db = db.lock().unwrap();
             db.set_key(key.to_string(), value.to_string())
+        }
+        ["SET", key, value, "PX", n] => {
+            let mut db_clone = db.lock().unwrap();
+            db_clone.set_key(key.to_string(), value.to_string());
+
+            let db = Arc::clone(&db);
+            let timeout = n.parse::<u64>().unwrap();
+            let k = key.to_string();
+            thread::spawn(move || {
+                thread::sleep(Duration::from_millis(timeout));
+                let mut db_clone = db.lock().unwrap();
+                db_clone.remove_key(k);
+            });
+            
+            "+OK\r\n".to_string()
         }
         ["GET", key] => {
             let db = db.lock().unwrap();
