@@ -42,6 +42,5 @@ impl RedisDatabase {
             None => "$-1\r\n".to_string(),
         }
     }
-
 }
 
