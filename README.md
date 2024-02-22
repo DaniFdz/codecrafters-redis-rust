@@ -10,7 +10,7 @@ basic commands like `PING`, `SET` and `GET`. Along the way I have learned about
 event loops, the Redis protocol, tokio and async Rust, and more.
 
 ## ⬇️ Dependencies
-Install [🦀Cargo](https://www.rust-lang.org/tools/install) and [🤖 Just](https://github.com/casey/just) 
+Install [🦀 Cargo](https://www.rust-lang.org/tools/install) and [🤖 Just](https://github.com/casey/just) 
 
 ```bash
 sudo apt install cargo
