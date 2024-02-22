@@ -6,7 +6,7 @@ This is my solution with Rust🦀 to the
 ["Build Your Own Redis" Challenge](https://codecrafters.io/challenges/redis).
 
 In this challenge, I build a toy Redis clone that's capable of handling
-basic commands like `PING`, `SET` and `GET`. Along the way I leart about
+basic commands like `PING`, `SET` and `GET`. Along the way I have learned about
 event loops, the Redis protocol, tokio and async Rust, and more.
 
 ## ⬇️ Dependencies
